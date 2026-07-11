@@ -1,0 +1,1090 @@
+# Let's create a comprehensive agriculture eCommerce website for "Ceylon Herbs"
+# We'll generate three files: index.html, style.css, and script.js
+
+import os
+
+output_dir = "/mnt/agents/output/ceylon_herbs"
+os.makedirs(output_dir, exist_ok=True)
+
+# ============================================
+# 1. index.html
+# ============================================
+html_content = '''<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ceylon Herbs - Premium Organic Agriculture Products from Sri Lanka. Buy fresh herbs, spices, tea, fruits, vegetables, seeds, and organic fertilizer online.">
+    <meta name="keywords" content="Ceylon Herbs, organic products, Sri Lanka, spices, tea, herbs, agriculture, eco-friendly">
+    <meta name="author" content="Ceylon Herbs">
+    <title>Ceylon Herbs | Premium Organic Agriculture Products</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loader">
+            <div class="leaf-loader"></div>
+            <p>Loading Ceylon Herbs...</p>
+        </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="back-to-top" aria-label="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="navbar">
+        <div class="nav-container">
+            <a href="#home" class="logo">
+                <i class="fas fa-leaf"></i>
+                <span>Ceylon Herbs</span>
+            </a>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#shop" class="nav-link">Shop</a></li>
+                <li><a href="#products" class="nav-link">Products</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="icon-btn search-toggle" id="search-toggle" aria-label="Search">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button class="icon-btn wishlist-toggle" id="wishlist-toggle" aria-label="Wishlist">
+                    <i class="fas fa-heart"></i>
+                    <span class="badge" id="wishlist-count">0</span>
+                </button>
+                <button class="icon-btn cart-toggle" id="cart-toggle" aria-label="Cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="badge" id="cart-count">0</span>
+                </button>
+                <button class="icon-btn dark-mode-toggle" id="dark-mode-toggle" aria-label="Toggle dark mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="icon-btn login-toggle" id="login-toggle" aria-label="Login">
+                    <i class="fas fa-user"></i>
+                </button>
+                <button class="hamburger" id="hamburger" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+        <!-- Search Bar -->
+        <div class="search-bar" id="search-bar">
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Search products..." aria-label="Search products">
+                <button class="search-btn" id="search-btn"><i class="fas fa-search"></i></button>
+                <button class="close-search" id="close-search"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobile-menu">
+        <ul class="mobile-nav-links">
+            <li><a href="#home" class="mobile-nav-link">Home</a></li>
+            <li><a href="#shop" class="mobile-nav-link">Shop</a></li>
+            <li><a href="#products" class="mobile-nav-link">Products</a></li>
+            <li><a href="#about" class="mobile-nav-link">About Us</a></li>
+            <li><a href="#contact" class="mobile-nav-link">Contact</a></li>
+            <li><a href="#" class="mobile-nav-link" id="mobile-login">Login / Register</a></li>
+        </ul>
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h3><i class="fas fa-shopping-cart"></i> Your Cart</h3>
+            <button class="close-cart" id="close-cart"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <!-- Cart items will be dynamically inserted here -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cart-total-price">LKR 0.00</span>
+            </div>
+            <button class="btn btn-primary btn-full checkout-btn" id="checkout-btn">Proceed to Checkout</button>
+        </div>
+    </div>
+    <div class="overlay" id="cart-overlay"></div>
+
+    <!-- Wishlist Sidebar -->
+    <div class="wishlist-sidebar" id="wishlist-sidebar">
+        <div class="wishlist-header">
+            <h3><i class="fas fa-heart"></i> Your Wishlist</h3>
+            <button class="close-wishlist" id="close-wishlist"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="wishlist-items" id="wishlist-items">
+            <!-- Wishlist items will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <!-- Login/Register Modal -->
+    <div class="modal" id="login-modal">
+        <div class="modal-content">
+            <button class="close-modal" id="close-login"><i class="fas fa-times"></i></button>
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">Login</button>
+                <button class="auth-tab" data-tab="register">Register</button>
+            </div>
+            <div class="auth-form active" id="login-form">
+                <h2>Welcome Back</h2>
+                <p>Sign in to your Ceylon Herbs account</p>
+                <form id="login-form-element">
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" placeholder="Enter your password" required>
+                    </div>
+                    <div class="form-options">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="remember-me">
+                            <span>Remember me</span>
+                        </label>
+                        <a href="#" class="forgot-password">Forgot password?</a>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Login</button>
+                </form>
+                <div class="social-login">
+                    <p>Or login with</p>
+                    <div class="social-buttons">
+                        <button class="social-btn google"><i class="fab fa-google"></i></button>
+                        <button class="social-btn facebook"><i class="fab fa-facebook-f"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="auth-form" id="register-form">
+                <h2>Create Account</h2>
+                <p>Join the Ceylon Herbs family</p>
+                <form id="register-form-element">
+                    <div class="form-group">
+                        <label for="reg-name">Full Name</label>
+                        <input type="text" id="reg-name" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-email">Email</label>
+                        <input type="email" id="reg-email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-phone">Phone Number</label>
+                        <input type="tel" id="reg-phone" placeholder="Enter your phone number" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-password">Password</label>
+                        <input type="password" id="reg-password" placeholder="Create a password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-confirm">Confirm Password</label>
+                        <input type="password" id="reg-confirm" placeholder="Confirm your password" required>
+                    </div>
+                    <label class="checkbox-label terms">
+                        <input type="checkbox" id="agree-terms" required>
+                        <span>I agree to the <a href="#">Terms & Conditions</a> and <a href="#">Privacy Policy</a></span>
+                    </label>
+                    <button type="submit" class="btn btn-primary btn-full">Create Account</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick View Modal -->
+    <div class="modal" id="quick-view-modal">
+        <div class="modal-content quick-view-content">
+            <button class="close-modal" id="close-quick-view"><i class="fas fa-times"></i></button>
+            <div class="quick-view-body" id="quick-view-body">
+                <!-- Quick view content will be dynamically inserted -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div class="modal" id="checkout-modal">
+        <div class="modal-content checkout-content">
+            <button class="close-modal" id="close-checkout"><i class="fas fa-times"></i></button>
+            <div class="checkout-body">
+                <h2><i class="fas fa-credit-card"></i> Checkout</h2>
+                <div class="checkout-grid">
+                    <div class="checkout-form-section">
+                        <h3>Shipping Information</h3>
+                        <form id="checkout-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="checkout-fname">First Name</label>
+                                    <input type="text" id="checkout-fname" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="checkout-lname">Last Name</label>
+                                    <input type="text" id="checkout-lname" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="checkout-email">Email</label>
+                                <input type="email" id="checkout-email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="checkout-phone">Phone</label>
+                                <input type="tel" id="checkout-phone" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="checkout-address">Address</label>
+                                <textarea id="checkout-address" rows="3" required></textarea>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="checkout-city">City</label>
+                                    <input type="text" id="checkout-city" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="checkout-postal">Postal Code</label>
+                                    <input type="text" id="checkout-postal" required>
+                                </div>
+                            </div>
+                            <h3>Payment Method</h3>
+                            <div class="payment-methods">
+                                <label class="payment-method">
+                                    <input type="radio" name="payment" value="card" checked>
+                                    <span><i class="fas fa-credit-card"></i> Credit/Debit Card</span>
+                                </label>
+                                <label class="payment-method">
+                                    <input type="radio" name="payment" value="cod">
+                                    <span><i class="fas fa-money-bill-wave"></i> Cash on Delivery</span>
+                                </label>
+                                <label class="payment-method">
+                                    <input type="radio" name="payment" value="bank">
+                                    <span><i class="fas fa-university"></i> Bank Transfer</span>
+                                </label>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-full">Place Order</button>
+                        </form>
+                    </div>
+                    <div class="checkout-summary">
+                        <h3>Order Summary</h3>
+                        <div class="checkout-items" id="checkout-items"></div>
+                        <div class="checkout-totals">
+                            <div class="total-row">
+                                <span>Subtotal</span>
+                                <span id="checkout-subtotal">LKR 0.00</span>
+                            </div>
+                            <div class="total-row">
+                                <span>Shipping</span>
+                                <span id="checkout-shipping">LKR 300.00</span>
+                            </div>
+                            <div class="total-row grand-total">
+                                <span>Total</span>
+                                <span id="checkout-total">LKR 0.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <div class="hero-bg">
+                <div class="hero-overlay"></div>
+            </div>
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <i class="fas fa-leaf"></i>
+                    <span>100% Organic & Natural</span>
+                </div>
+                <h1 class="hero-title">
+                    Nature's Finest<br>
+                    <span class="highlight">From Ceylon</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Discover the authentic taste of Sri Lanka with our premium organic herbs, spices, 
+                    and agricultural products. Sourced directly from local farmers committed to sustainable farming.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#shop" class="btn btn-primary btn-lg">
+                        <i class="fas fa-shopping-bag"></i> Shop Now
+                    </a>
+                    <a href="#about" class="btn btn-outline btn-lg">
+                        <i class="fas fa-info-circle"></i> Learn More
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" data-target="5000">0</span>
+                        <span class="stat-label">Happy Customers</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" data-target="150">0</span>
+                        <span class="stat-label">Products</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" data-target="50">0</span>
+                        <span class="stat-label">Farm Partners</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" data-target="15">0</span>
+                        <span class="stat-label">Years Experience</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-scroll">
+                <a href="#welcome" class="scroll-indicator">
+                    <span>Scroll Down</span>
+                    <i class="fas fa-chevron-down"></i>
+                </a>
+            </div>
+        </section>
+
+        <!-- Welcome Section -->
+        <section id="welcome" class="welcome section-padding">
+            <div class="container">
+                <div class="welcome-grid">
+                    <div class="welcome-image">
+                        <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=600&h=700&fit=crop" alt="Sri Lankan farm landscape">
+                        <div class="experience-badge">
+                            <span class="exp-number">15+</span>
+                            <span class="exp-text">Years of Excellence</span>
+                        </div>
+                    </div>
+                    <div class="welcome-content">
+                        <span class="section-tag">Welcome to Ceylon Herbs</span>
+                        <h2 class="section-title">Bringing Nature's<br><span class="highlight">Best to Your Doorstep</span></h2>
+                        <p class="welcome-text">
+                            At Ceylon Herbs, we believe in the power of nature. Our journey began with a simple mission: 
+                            to connect conscious consumers with the finest organic products from the lush landscapes of Sri Lanka. 
+                            Every product in our collection is carefully selected, ethically sourced, and delivered with love.
+                        </p>
+                        <p class="welcome-text">
+                            We work directly with over 50 local farming communities, ensuring fair trade practices 
+                            while bringing you the freshest, most flavorful herbs, spices, and produce straight from the garden to your table.
+                        </p>
+                        <div class="welcome-features">
+                            <div class="feature-item">
+                                <i class="fas fa-seedling"></i>
+                                <span>100% Organic</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-hand-holding-heart"></i>
+                                <span>Ethically Sourced</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-truck"></i>
+                                <span>Fast Delivery</span>
+                            </div>
+                        </div>
+                        <a href="#about" class="btn btn-primary">Discover Our Story</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Categories Section -->
+        <section id="categories" class="categories section-padding bg-light">
+            <div class="container">
+                <div class="section-header center">
+                    <span class="section-tag">Browse Categories</span>
+                    <h2 class="section-title">Shop by <span class="highlight">Category</span></h2>
+                    <p class="section-subtitle">Explore our wide range of organic products</p>
+                </div>
+                <div class="categories-grid">
+                    <div class="category-card" data-category="herbal-plants">
+                        <div class="category-image">
+                            <img src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=400&h=400&fit=crop" alt="Herbal Plants">
+                        </div>
+                        <div class="category-info">
+                            <h3>Herbal Plants</h3>
+                            <p>25 Products</p>
+                            <span class="category-link">Shop Now <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </div>
+                    <div class="category-card" data-category="spices">
+                        <div class="category-image">
+                            <img src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=400&h=400&fit=crop" alt="Spices">
+                        </div>
+                        <div class="category-info">
+                            <h3>Spices</h3>
+                            <p>40 Products</p>
+                            <span class="category-link">Shop Now <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </div>
+                    <div class="category-card" data-category="tea">
+                        <div class="category-image">
+                            <img src="https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=400&h=400&fit=crop" alt="Tea">
+                        </div>
+                        <div class="category-info">
+                            <h3>Tea</h3>
+                            <p>30 Products</p>
+                            <span class="category-link">Shop Now <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </div>
+                    <div class="category-card" data-category="fruits">
+                        <div class="category-image">
+                            <img src="https://images.unsplash.com/photo-1619566636858-adf3ef46400b?w=400&h=400&fit=crop" alt="Fruits">
+                        </div>
+                        <div class="category-info">
+                            <h3>Fruits</h3>
+                            <p>20 Products</p>
+                            <span class="category-link">Shop Now <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </div>
+                    <div class="category-card" data-category="vegetables">
+                        <div class="category-image">
+                            <img src="https://images.unsplash.com/photo-1566385101042-1a0aa0c1268c?w=400&h=400&fit=crop" alt="Vegetables">
+                        </div>
+                        <div class="category-info">
+                            <h3>Vegetables</h3>
+                            <p>18 Products</p>
+                            <span class="category-link">Shop Now <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </div>
+                    <div class="category-card" data-category="seeds">
+                        <div class="category-image">
+                            <img src="https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?w=400&h=400&fit=crop" alt="Seeds">
+                        </div>
+                        <div class="category-info">
+                            <h3>Seeds</h3>
+                            <p>12 Products</p>
+                            <span class="category-link">Shop Now <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </div>
+                    <div class="category-card" data-category="fertilizer">
+                        <div class="category-image">
+                            <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&h=400&fit=crop" alt="Organic Fertilizer">
+                        </div>
+                        <div class="category-info">
+                            <h3>Organic Fertilizer</h3>
+                            <p>8 Products</p>
+                            <span class="category-link">Shop Now <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Products Section -->
+        <section id="shop" class="featured-products section-padding">
+            <div class="container">
+                <div class="section-header center">
+                    <span class="section-tag">Our Collection</span>
+                    <h2 class="section-title">Featured <span class="highlight">Products</span></h2>
+                    <p class="section-subtitle">Handpicked organic products just for you</p>
+                </div>
+                <div class="products-grid" id="featured-products">
+                    <!-- Products will be dynamically inserted -->
+                </div>
+                <div class="text-center">
+                    <a href="#products" class="btn btn-primary btn-lg">View All Products</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Choose Us Section -->
+        <section id="why-us" class="why-us section-padding bg-light">
+            <div class="container">
+                <div class="section-header center">
+                    <span class="section-tag">Why Choose Us</span>
+                    <h2 class="section-title">The Ceylon Herbs <span class="highlight">Difference</span></h2>
+                </div>
+                <div class="why-us-grid">
+                    <div class="why-card">
+                        <div class="why-icon">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <h3>100% Organic</h3>
+                        <p>All our products are certified organic, grown without synthetic pesticides or fertilizers, ensuring pure, natural goodness in every purchase.</p>
+                    </div>
+                    <div class="why-card">
+                        <div class="why-icon">
+                            <i class="fas fa-handshake"></i>
+                        </div>
+                        <h3>Fair Trade</h3>
+                        <p>We partner directly with local farmers, ensuring fair wages and sustainable livelihoods for farming communities across Sri Lanka.</p>
+                    </div>
+                    <div class="why-card">
+                        <div class="why-icon">
+                            <i class="fas fa-shipping-fast"></i>
+                        </div>
+                        <h3>Fast Delivery</h3>
+                        <p>From our farms to your doorstep within 48 hours. Freshness guaranteed with temperature-controlled packaging and express shipping.</p>
+                    </div>
+                    <div class="why-card">
+                        <div class="why-icon">
+                            <i class="fas fa-award"></i>
+                        </div>
+                        <h3>Premium Quality</h3>
+                        <p>Every product undergoes rigorous quality testing. We maintain ISO 22000 standards to ensure you receive only the best.</p>
+                    </div>
+                    <div class="why-card">
+                        <div class="why-icon">
+                            <i class="fas fa-recycle"></i>
+                        </div>
+                        <h3>Eco-Friendly</h3>
+                        <p>Our packaging is 100% biodegradable and recyclable. We are committed to reducing our carbon footprint at every step.</p>
+                    </div>
+                    <div class="why-card">
+                        <div class="why-icon">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <h3>24/7 Support</h3>
+                        <p>Our dedicated customer support team is available round the clock to assist you with orders, queries, and feedback.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Best Selling Products -->
+        <section class="best-sellers section-padding">
+            <div class="container">
+                <div class="section-header center">
+                    <span class="section-tag">Top Picks</span>
+                    <h2 class="section-title">Best <span class="highlight">Sellers</span></h2>
+                    <p class="section-subtitle">Our most loved products by customers</p>
+                </div>
+                <div class="products-slider-container">
+                    <button class="slider-btn prev" id="bestseller-prev"><i class="fas fa-chevron-left"></i></button>
+                    <div class="products-slider" id="bestseller-slider">
+                        <!-- Best seller products will be dynamically inserted -->
+                    </div>
+                    <button class="slider-btn next" id="bestseller-next"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </section>
+
+        <!-- All Products Section -->
+        <section id="products" class="all-products section-padding bg-light">
+            <div class="container">
+                <div class="section-header center">
+                    <span class="section-tag">Shop</span>
+                    <h2 class="section-title">All <span class="highlight">Products</span></h2>
+                    <p class="section-subtitle">Browse our complete collection</p>
+                </div>
+                <div class="shop-controls">
+                    <div class="filter-group">
+                        <label for="category-filter">Filter by:</label>
+                        <select id="category-filter">
+                            <option value="all">All Categories</option>
+                            <option value="herbal-plants">Herbal Plants</option>
+                            <option value="spices">Spices</option>
+                            <option value="tea">Tea</option>
+                            <option value="fruits">Fruits</option>
+                            <option value="vegetables">Vegetables</option>
+                            <option value="seeds">Seeds</option>
+                            <option value="fertilizer">Organic Fertilizer</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="sort-filter">Sort by:</label>
+                        <select id="sort-filter">
+                            <option value="default">Default</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="rating">Highest Rated</option>
+                            <option value="name">Name: A-Z</option>
+                        </select>
+                    </div>
+                    <div class="results-count">
+                        Showing <span id="showing-count">0</span> of <span id="total-count">0</span> products
+                    </div>
+                </div>
+                <div class="products-grid" id="all-products">
+                    <!-- All products will be dynamically inserted -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section class="testimonials section-padding">
+            <div class="container">
+                <div class="section-header center">
+                    <span class="section-tag">Testimonials</span>
+                    <h2 class="section-title">What Our <span class="highlight">Customers Say</span></h2>
+                </div>
+                <div class="testimonials-slider" id="testimonials-slider">
+                    <div class="testimonial-card">
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">"The quality of Ceylon cinnamon from Ceylon Herbs is absolutely unmatched. I've been ordering for 2 years and the consistency is remarkable. My customers love it!"</p>
+                        <div class="testimonial-author">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face" alt="Sarah Johnson">
+                            <div>
+                                <h4>Sarah Johnson</h4>
+                                <span>Restaurant Owner, London</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">"As a health practitioner, I recommend Ceylon Herbs to all my clients. Their moringa powder and turmeric are of pharmaceutical grade. Truly exceptional products."</p>
+                        <div class="testimonial-author">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face" alt="Dr. Michael Chen">
+                            <div>
+                                <h4>Dr. Michael Chen</h4>
+                                <span>Naturopath, Singapore</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <p class="testimonial-text">"Fast delivery, eco-friendly packaging, and the freshest organic vegetables I've ever ordered online. Ceylon Herbs has become my go-to for all organic needs."</p>
+                        <div class="testimonial-author">
+                            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face" alt="Priya Fernando">
+                            <div>
+                                <h4>Priya Fernando</h4>
+                                <span>Home Chef, Colombo</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">"The organic fertilizer transformed my home garden completely. My plants have never been healthier. The customer support team also helped me choose the right products."</p>
+                        <div class="testimonial-author">
+                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face" alt="James Wilson">
+                            <div>
+                                <h4>James Wilson</h4>
+                                <span>Garden Enthusiast, Melbourne</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-dots" id="testimonial-dots"></div>
+            </div>
+        </section>
+
+        <!-- Latest News/Blog Section -->
+        <section class="blog section-padding bg-light">
+            <div class="container">
+                <div class="section-header center">
+                    <span class="section-tag">From Our Blog</span>
+                    <h2 class="section-title">Latest <span class="highlight">News & Tips</span></h2>
+                    <p class="section-subtitle">Stay updated with organic living insights</p>
+                </div>
+                <div class="blog-grid">
+                    <article class="blog-card">
+                        <div class="blog-image">
+                            <img src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=500&h=350&fit=crop" alt="Spices">
+                            <span class="blog-category">Spices</span>
+                        </div>
+                        <div class="blog-content">
+                            <div class="blog-meta">
+                                <span><i class="fas fa-calendar"></i> July 5, 2026</span>
+                                <span><i class="fas fa-clock"></i> 5 min read</span>
+                            </div>
+                            <h3>The Health Benefits of Ceylon Cinnamon</h3>
+                            <p>Discover why Ceylon cinnamon is considered the "true cinnamon" and how it can boost your health with its powerful antioxidants...</p>
+                            <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+                    <article class="blog-card">
+                        <div class="blog-image">
+                            <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=500&h=350&fit=crop" alt="Organic Farming">
+                            <span class="blog-category">Farming</span>
+                        </div>
+                        <div class="blog-content">
+                            <div class="blog-meta">
+                                <span><i class="fas fa-calendar"></i> June 28, 2026</span>
+                                <span><i class="fas fa-clock"></i> 7 min read</span>
+                            </div>
+                            <h3>Starting Your Own Organic Kitchen Garden</h3>
+                            <p>A beginner's guide to growing fresh herbs and vegetables at home using organic methods and sustainable practices...</p>
+                            <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+                    <article class="blog-card">
+                        <div class="blog-image">
+                            <img src="https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=500&h=350&fit=crop" alt="Tea">
+                            <span class="blog-category">Tea</span>
+                        </div>
+                        <div class="blog-content">
+                            <div class="blog-meta">
+                                <span><i class="fas fa-calendar"></i> June 20, 2026</span>
+                                <span><i class="fas fa-clock"></i> 4 min read</span>
+                            </div>
+                            <h3>The Art of Brewing Perfect Ceylon Tea</h3>
+                            <p>Learn the traditional methods of brewing Ceylon tea to extract the perfect flavor, aroma, and health benefits...</p>
+                            <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about section-padding">
+            <div class="container">
+                <div class="section-header center">
+                    <span class="section-tag">About Us</span>
+                    <h2 class="section-title">Our <span class="highlight">Story</span></h2>
+                </div>
+                <div class="about-grid">
+                    <div class="about-images">
+                        <img src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=500&h=600&fit=crop" alt="Farm workers" class="about-img-main">
+                        <img src="https://images.unsplash.com/photo-1595855709915-374425aca29d?w=300&h=300&fit=crop" alt="Fresh produce" class="about-img-sub">
+                    </div>
+                    <div class="about-content">
+                        <h3>Rooted in Tradition, Growing for Tomorrow</h3>
+                        <p>Ceylon Herbs was founded in 2011 with a vision to bring the authentic flavors and healing properties of Sri Lankan agriculture to the world. What started as a small family farm in the hill country has grown into a trusted brand serving thousands of customers across the globe.</p>
+                        
+                        <div class="about-mission">
+                            <div class="mission-item">
+                                <i class="fas fa-bullseye"></i>
+                                <div>
+                                    <h4>Our Mission</h4>
+                                    <p>To provide the highest quality organic agricultural products while supporting sustainable farming practices and empowering local communities.</p>
+                                </div>
+                            </div>
+                            <div class="mission-item">
+                                <i class="fas fa-eye"></i>
+                                <div>
+                                    <h4>Our Vision</h4>
+                                    <p>To be the leading global provider of organic Ceylon products, recognized for quality, sustainability, and ethical business practices.</p>
+                                </div>
+                            </div>
+                            <div class="mission-item">
+                                <i class="fas fa-heart"></i>
+                                <div>
+                                    <h4>Our Commitment</h4>
+                                    <p>We are committed to zero-waste operations, carbon-neutral shipping, and ensuring every farmer in our network receives fair compensation.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-section">
+                    <h3 class="team-title">Meet Our Team</h3>
+                    <div class="team-grid">
+                        <div class="team-card">
+                            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=300&h=300&fit=crop&crop=face" alt="Team member">
+                            <h4>Arjuna Perera</h4>
+                            <span>Founder & CEO</span>
+                        </div>
+                        <div class="team-card">
+                            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&h=300&fit=crop&crop=face" alt="Team member">
+                            <h4>Nimali Silva</h4>
+                            <span>Head of Operations</span>
+                        </div>
+                        <div class="team-card">
+                            <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=300&h=300&fit=crop&crop=face" alt="Team member">
+                            <h4>Rohan De Silva</h4>
+                            <span>Quality Assurance</span>
+                        </div>
+                        <div class="team-card">
+                            <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=300&h=300&fit=crop&crop=face" alt="Team member">
+                            <h4>Kavindi Jayasuriya</h4>
+                            <span>Marketing Director</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="faq section-padding bg-light">
+            <div class="container">
+                <div class="section-header center">
+                    <span class="section-tag">FAQ</span>
+                    <h2 class="section-title">Frequently Asked <span class="highlight">Questions</span></h2>
+                </div>
+                <div class="faq-container">
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>What makes Ceylon Herbs products different from regular store products?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Our products are 100% organic, sourced directly from certified farms in Sri Lanka. We maintain strict quality control, use sustainable farming practices, and ensure fair trade. Unlike mass-produced alternatives, our products retain their natural flavor, aroma, and nutritional value.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>How long does delivery take?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Within Sri Lanka, delivery takes 1-2 business days. International orders typically arrive within 5-10 business days depending on the destination. All orders are shipped with tracking numbers for your convenience.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>Do you offer international shipping?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Yes! We ship to over 50 countries worldwide. Shipping rates are calculated at checkout based on weight and destination. Orders over LKR 15,000 qualify for free international shipping.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>What is your return policy?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>We offer a 30-day satisfaction guarantee. If you're not completely happy with your purchase, contact us for a full refund or replacement. Products must be in original condition for returns.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>Are your products certified organic?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Yes, all our products are certified organic by the Sri Lanka Standards Institution (SLSI) and carry USDA Organic certification. We undergo regular third-party audits to maintain our certifications.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>How should I store your products?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Store spices and herbs in airtight containers in a cool, dry place away from direct sunlight. Fresh produce should be refrigerated. Tea should be kept in sealed containers to preserve freshness and aroma.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact section-padding">
+            <div class="container">
+                <div class="section-header center">
+                    <span class="section-tag">Get in Touch</span>
+                    <h2 class="section-title">Contact <span class="highlight">Us</span></h2>
+                    <p class="section-subtitle">We'd love to hear from you</p>
+                </div>
+                <div class="contact-grid">
+                    <div class="contact-info">
+                        <div class="contact-card">
+                            <div class="contact-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div>
+                                <h4>Visit Us</h4>
+                                <p>123 Green Valley Road,<br>Kandy, Sri Lanka 20000</p>
+                            </div>
+                        </div>
+                        <div class="contact-card">
+                            <div class="contact-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div>
+                                <h4>Call Us</h4>
+                                <p>+94 81 234 5678<br>+94 77 123 4567</p>
+                            </div>
+                        </div>
+                        <div class="contact-card">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h4>Email Us</h4>
+                                <p>info@ceylonherbs.lk<br>support@ceylonherbs.lk</p>
+                            </div>
+                        </div>
+                        <div class="contact-card">
+                            <div class="contact-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div>
+                                <h4>Working Hours</h4>
+                                <p>Mon - Sat: 8:00 AM - 6:00 PM<br>Sunday: 9:00 AM - 2:00 PM</p>
+                            </div>
+                        </div>
+                        <div class="contact-social">
+                            <h4>Follow Us</h4>
+                            <div class="social-links">
+                                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                                <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                                <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="contact-form-wrapper">
+                        <form id="contact-form" class="contact-form">
+                            <h3>Send us a Message</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="contact-name">Full Name *</label>
+                                    <input type="text" id="contact-name" placeholder="John Doe" required>
+                                    <span class="error-message" id="name-error"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="contact-email">Email *</label>
+                                    <input type="email" id="contact-email" placeholder="john@example.com" required>
+                                    <span class="error-message" id="email-error"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="contact-phone">Phone Number</label>
+                                <input type="tel" id="contact-phone" placeholder="+94 77 123 4567">
+                            </div>
+                            <div class="form-group">
+                                <label for="contact-subject">Subject *</label>
+                                <input type="text" id="contact-subject" placeholder="How can we help?" required>
+                                <span class="error-message" id="subject-error"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="contact-message">Message *</label>
+                                <textarea id="contact-message" rows="5" placeholder="Tell us more about your inquiry..." required></textarea>
+                                <span class="error-message" id="message-error"></span>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-full">
+                                <i class="fas fa-paper-plane"></i> Send Message
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="map-container">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63320.43010708488!2d80.6212!3d7.2906!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae366266498acd3%3A0x411a3818a1e03c35!2sKandy%2C%20Sri%20Lanka!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus" 
+                        width="100%" 
+                        height="400" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade"
+                        title="Ceylon Herbs Location">
+                    </iframe>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter Section -->
+        <section class="newsletter">
+            <div class="container">
+                <div class="newsletter-content">
+                    <div class="newsletter-text">
+                        <h2>Subscribe to Our Newsletter</h2>
+                        <p>Get the latest updates on new products, farming tips, and exclusive offers delivered to your inbox.</p>
+                    </div>
+                    <form id="newsletter-form" class="newsletter-form">
+                        <input type="email" id="newsletter-email" placeholder="Enter your email address" required>
+                        <button type="submit" class="btn btn-primary">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-main">
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-brand">
+                        <a href="#home" class="footer-logo">
+                            <i class="fas fa-leaf"></i>
+                            <span>Ceylon Herbs</span>
+                        </a>
+                        <p>Bringing the finest organic products from the heart of Sri Lanka to your doorstep. Quality, sustainability, and authenticity in every product.</p>
+                        <div class="footer-social">
+                            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                        </div>
+                    </div>
+                    <div class="footer-links">
+                        <h4>Quick Links</h4>
+                        <ul>
+                            <li><a href="#home">Home</a></li>
+                            <li><a href="#shop">Shop</a></li>
+                            <li><a href="#products">Products</a></li>
+                            <li><a href="#about">About Us</a></li>
+                            <li><a href="#contact">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-links">
+                        <h4>Categories</h4>
+                        <ul>
+                            <li><a href="#products">Herbal Plants</a></li>
+                            <li><a href="#products">Spices</a></li>
+                            <li><a href="#products">Tea</a></li>
+                            <li><a href="#products">Fruits</a></li>
+                            <li><a href="#products">Organic Fertilizer</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-links">
+                        <h4>Customer Support</h4>
+                        <ul>
+                            <li><a href="#">FAQ</a></li>
+                            <li><a href="#">Shipping Info</a></li>
+                            <li><a href="#">Returns & Refunds</a></li>
+                            <li><a href="#">Track Order</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Terms & Conditions</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-contact">
+                        <h4>Contact Info</h4>
+                        <p><i class="fas fa-map-marker-alt"></i> 123 Green Valley Road, Kandy, Sri Lanka</p>
+                        <p><i class="fas fa-phone"></i> +94 81 234 5678</p>
+                        <p><i class="fas fa-envelope"></i> info@ceylonherbs.lk</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p>&copy; 2026 Ceylon Herbs. All Rights Reserved. | Designed with <i class="fas fa-heart"></i> in Sri Lanka</p>
+                <div class="payment-methods-footer">
+                    <i class="fab fa-cc-visa"></i>
+                    <i class="fab fa-cc-mastercard"></i>
+                    <i class="fab fa-cc-amex"></i>
+                    <i class="fab fa-cc-paypal"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toast-message">Item added to cart!</span>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>'''
+
+with open(f"{output_dir}/index.html", "w", encoding="utf-8") as f:
+    f.write(html_content)
+
+print("index.html created successfully!")
+print(f"Size: {len(html_content)} characters")
